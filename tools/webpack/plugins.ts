@@ -5,11 +5,12 @@ import HtmlWebpackPlugin from 'html-webpack-plugin'
 import DuplicatePackageCheckerPlugin from 'duplicate-package-checker-webpack-plugin'
 import CircularDependencyPlugin from 'circular-dependency-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
-import AssetsWebpackPlugin from 'assets-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { compact } from 'lodash'
 import { Argv, NODE_ENV } from './types'
 import getClientEnvironment from './env'
+
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin')
 
 export default function getPlugins(argv: Argv): WebpackPluginInstance[] {
   return compact([
@@ -82,14 +83,24 @@ export default function getPlugins(argv: Argv): WebpackPluginInstance[] {
     }),
 
     /**
-     * https://github.com/ztoben/assets-webpack-plugin
-     * Webpack plugin that emits a json file with assets paths.
+     * https://github.com/shellscape/webpack-manifest-plugin
+     * A Webpack plugin for generating an asset manifest.
      */
-    argv.NODE_ENV === NODE_ENV.PRODUCTION && new AssetsWebpackPlugin({
-      filename: 'assets.json',
-      path: argv.paths.output,
-      prettyPrint: true,
-    }),
+    argv.NODE_ENV === NODE_ENV.PRODUCTION && new WebpackManifestPlugin({
+      fileName: 'asset-manifest.json',
+      publicPath: argv.paths.publicPath,
+      generate: ((_seed: any, files: any) => {
+        const filesGroup = files
+          .filter((file: any) => file.isChunk)
+          .reduce((acc: any, file: any) => {
+            acc[file.chunk.name] = acc[file.chunk.name] || {}
+            const ext = file.path.slice(file.path.lastIndexOf('.') + 1)
+            acc[file.chunk.name][ext] = file.path
+            return acc
+          }, {})
+        return filesGroup
+      }),
+    }) as WebpackPluginInstance,
 
     /**
      * https://github.com/webpack-contrib/webpack-bundle-analyzer

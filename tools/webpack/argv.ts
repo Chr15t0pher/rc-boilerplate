@@ -10,6 +10,7 @@ function getPaths(env: ENV) {
   }
 
   return {
+    publicPath: '/',
     output: resolvePath('dist'),
     main: resolvePath('src', 'index.tsx'),
     js: `js/[name]${chunkhash}.js`,

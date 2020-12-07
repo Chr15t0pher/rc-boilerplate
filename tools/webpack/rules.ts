@@ -26,7 +26,7 @@ function getStyleLoaders(argv: Argv) {
     argv.NODE_ENV === NODE_ENV.PRODUCTION ? {
       loader: MiniCssExtractPlugin.loader,
       options: {
-        publicPath: './',
+        publicPath: argv.paths.publicPath,
       },
     } : {
       loader: 'style-loader',

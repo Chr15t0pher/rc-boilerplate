@@ -10,6 +10,7 @@ export type ENV = {
 }
 
 export enum PATHS {
+  PUBLICPATH = 'publicPath',
   MAIN = 'main',
   JS = 'js',
   CSS = 'css',
