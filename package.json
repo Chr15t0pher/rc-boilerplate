@@ -1,7 +1,7 @@
 {
-  "name": "meeting",
+  "name": "boilerplate",
   "version": "0.1.0",
-  "description": "meeting scene using agora sdk",
+  "description": "typescript + react + rxjs boilerplate",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
