@@ -1,3 +1,4 @@
+import fs from 'fs'
 import webpack from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 import getArgv from './argv'
@@ -7,7 +8,7 @@ import getOutput from './output'
 import getRules from './rules'
 import getOptimization from './optimization'
 import getPlugins from './plugins'
-import { fork, formatStats } from './util'
+import { fork, formatStats, resolvePath } from './util'
 import { ENV, NODE_ENV } from './types'
 
 const env = process.env as ENV
@@ -52,6 +53,7 @@ export default config
 fork(
   argv.NODE_ENV === NODE_ENV.DEVELOPMENT,
   () => {
+    // dev
     const server = new WebpackDevServer(
       webpack(config),
       {
@@ -61,15 +63,18 @@ fork(
     server.listen(argv.port)
   },
   () => {
-    webpack(config,
-      (error, stats) => {
-        if (error) {
-          throw error
-        }
-        if (stats?.hasErrors()) {
-          throw new Error('Build failed with errors')
-        }
-        console.info(formatStats(stats!, argv))
-      })
+    // build
+    fs.rmdir(resolvePath('dist'), { recursive: true }, () => {
+      webpack(config,
+        (error, stats) => {
+          if (error) {
+            throw error
+          }
+          if (stats?.hasErrors()) {
+            throw new Error('Build failed with errors')
+          }
+          console.info(formatStats(stats!, argv))
+        })
+    })
   },
 )

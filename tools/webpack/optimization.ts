@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import TerserPlugin from 'terser-webpack-plugin'
 import CSSMinimizerPlugin from 'css-minimizer-webpack-plugin'
-import { Configuration } from 'webpack'
+import { Configuration, WebpackPluginInstance } from 'webpack'
 import { Argv, NODE_ENV } from './types'
 
 export default function getOptimization(argv: Argv): Configuration['optimization'] {
@@ -31,7 +31,7 @@ export default function getOptimization(argv: Argv): Configuration['optimization
             ascii_only: true,
           },
         },
-      }) as any,
+      }) as unknown as WebpackPluginInstance,
       /**
        * https://github.com/webpack-contrib/css-minimizer-webpack-plugin
        * This plugin uses cssnano to optimize and minify your CSS.
@@ -46,6 +46,7 @@ export default function getOptimization(argv: Argv): Configuration['optimization
           enforce: true,
           reuseExistingChunk: true,
           priority: 90,
+          test: /[\\/]node_modules[\\/]/,
         },
       },
     },
