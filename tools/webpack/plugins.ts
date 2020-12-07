@@ -75,7 +75,7 @@ export default function getPlugins(argv: Argv): WebpackPluginInstance[] {
      */
     argv.NODE_ENV === NODE_ENV.PRODUCTION && new MiniCssExtractPlugin({
       filename: argv.paths.css,
-      chunkFilename: '[id].[hash].css',
+      chunkFilename: '[name].[hash].css',
     }),
 
     /**

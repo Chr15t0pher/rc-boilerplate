@@ -1,13 +1,13 @@
 import { Configuration } from 'webpack'
 import { isString } from 'lodash'
-import { Argv } from './types'
+import { Argv, NODE_ENV } from './types'
 
 export default function getDevtool(argv: Argv): Configuration['devtool'] {
-  let devtool = 'nosources-source-map'
-
-  if (isString(argv.sourcemap)) {
-    devtool = argv.sourcemap
+  if (argv.NODE_ENV === NODE_ENV.DEVELOPMENT) {
+    return 'cheap-module-source-map'
   }
-
-  return devtool
+  if (argv.NODE_ENV === NODE_ENV.PRODUCTION && isString(argv.sourcemap)) {
+    return 'source-map'
+  }
+  return false
 }

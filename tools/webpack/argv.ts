@@ -13,7 +13,7 @@ function getPaths(env: ENV) {
     output: resolvePath('dist'),
     main: resolvePath('src', 'index.tsx'),
     js: `js/[name]${chunkhash}.js`,
-    css: `css/[name]${chunkhash}.js`,
+    css: `css/[name]${chunkhash}.css`,
     image: `image/[name]${hash}.[ext]`,
     font: `fonts/[name]${hash}.[ext]`,
     template: resolvePath('statics', 'index.html'),

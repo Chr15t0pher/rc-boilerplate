@@ -34,13 +34,13 @@ function getStyleLoaders(argv: Argv) {
     {
       loader: 'css-loader',
       options: {
-        sourceMap: !!argv.sourcemap,
+        sourceMap: argv.NODE_ENV === NODE_ENV.DEVELOPMENT,
       },
     },
     {
       loader: 'postcss-loader',
       options: {
-        sourceMap: !!argv.sourcemap,
+        sourceMap: argv.NODE_ENV === NODE_ENV.DEVELOPMENT,
       },
     },
   ]
