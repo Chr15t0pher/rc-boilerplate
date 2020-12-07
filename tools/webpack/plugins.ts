@@ -1,6 +1,6 @@
 import CaseSensitivePathsWebpackPlugin from 'case-sensitive-paths-webpack-plugin'
 import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin'
-import { ProvidePlugin, WebpackPluginInstance } from 'webpack'
+import { ProvidePlugin, WebpackPluginInstance, DefinePlugin } from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import DuplicatePackageCheckerPlugin from 'duplicate-package-checker-webpack-plugin'
 import CircularDependencyPlugin from 'circular-dependency-plugin'
@@ -9,6 +9,7 @@ import AssetsWebpackPlugin from 'assets-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { compact } from 'lodash'
 import { Argv, NODE_ENV } from './types'
+import getClientEnvironment from './env'
 
 export default function getPlugins(argv: Argv): WebpackPluginInstance[] {
   return compact([
@@ -66,6 +67,8 @@ export default function getPlugins(argv: Argv): WebpackPluginInstance[] {
       failOnError: argv.NODE_ENV === NODE_ENV.PRODUCTION,
       allowAsyncCycles: false,
     }) as WebpackPluginInstance,
+
+    new DefinePlugin(getClientEnvironment().stringified),
 
     /**
      * https://github.com/webpack-contrib/mini-css-extract-plugin
