@@ -14,6 +14,7 @@ module.exports = {
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
+      tsx: true
     },
     ecmaVersion: 12,
     sourceType: 'module',
@@ -58,6 +59,7 @@ module.exports = {
     'react/jsx-filename-extension': [2, { 'extensions': ['.js', '.jsx', '.ts', '.tsx'] }],
     //FIXME: https://github.com/typescript-eslint/typescript-eslint/issues/2540
     'no-use-before-define': 'off',
+    'linebreak-style': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
     '@typescript-eslint/no-unused-vars': [2, { args: 'none' }],
     '@typescript-eslint/no-shadow': [2, { ignoreTypeValueShadow: true }],

@@ -1,6 +1,11 @@
+/* eslint-disable import/no-named-default */
+/* eslint-disable import/order */
+/* eslint-disable max-classes-per-file */
 import CaseSensitivePathsWebpackPlugin from 'case-sensitive-paths-webpack-plugin'
 import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin'
-import { ProvidePlugin, WebpackPluginInstance, DefinePlugin } from 'webpack'
+import {
+  ProvidePlugin, WebpackPluginInstance, DefinePlugin,
+} from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import DuplicatePackageCheckerPlugin from 'duplicate-package-checker-webpack-plugin'
 import CircularDependencyPlugin from 'circular-dependency-plugin'
@@ -8,6 +13,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { compact } from 'lodash'
 import { Argv, NODE_ENV } from './types'
+import { default as ManifestPlugin } from 'webpack-manifest-plugin'
 import getClientEnvironment from './env'
 
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin')
@@ -89,18 +95,18 @@ export default function getPlugins(argv: Argv): WebpackPluginInstance[] {
     argv.NODE_ENV === NODE_ENV.PRODUCTION && new WebpackManifestPlugin({
       fileName: 'asset-manifest.json',
       publicPath: argv.paths.publicPath,
-      generate: ((_seed: any, files: any) => {
+      generate: ((_seed, files) => {
         const filesGroup = files
-          .filter((file: any) => file.isChunk)
-          .reduce((acc: any, file: any) => {
-            acc[file.chunk.name] = acc[file.chunk.name] || {}
+          .filter((file) => file.isChunk)
+          .reduce((acc, file) => {
+            acc[file.chunk?.name!] ??= {}
             const ext = file.path.slice(file.path.lastIndexOf('.') + 1)
-            acc[file.chunk.name][ext] = file.path
+            acc[file.chunk?.name!][ext] = file.path
             return acc
-          }, {})
+          }, {} as Record<string, Record<string, string>>)
         return filesGroup
       }),
-    }) as WebpackPluginInstance,
+    } as ManifestPlugin.Options) as WebpackPluginInstance,
 
     /**
      * https://github.com/webpack-contrib/webpack-bundle-analyzer
