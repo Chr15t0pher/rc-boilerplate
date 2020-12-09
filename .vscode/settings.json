@@ -10,5 +10,5 @@
     "**/bower_components": false,
     "**/node_modules": false
   },
-  "editor.tokenColorCustomizations": null
+  "editor.tokenColorCustomizations": null,
 }
