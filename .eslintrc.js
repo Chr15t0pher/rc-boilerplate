@@ -24,12 +24,20 @@ module.exports = {
     '@typescript-eslint',
   ],
   settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx', '.json']
+    },
     'import/extensions': [
       '.js',
       '.jsx',
       '.ts',
       '.tsx'
-    ]
+    ],
+    'import/resolver': {
+      typescript: {
+        project: './tsconfig.json'
+      }
+    }
   },
   rules: {
     semi: ["error", "never"],
@@ -51,7 +59,7 @@ module.exports = {
       },
     ],
     'import/no-unresolved': [
-      2, 
+      2,
       { "caseSensitive": false }
     ],
     'no-console': ['error', { allow: ['warn', 'info', 'error'] }],
@@ -60,6 +68,8 @@ module.exports = {
     //FIXME: https://github.com/typescript-eslint/typescript-eslint/issues/2540
     'no-use-before-define': 'off',
     'linebreak-style': 'off',
+    'class-methods-use-this': 'off',
+    'import/prefer-default-export': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
     '@typescript-eslint/no-unused-vars': [2, { args: 'none' }],
     '@typescript-eslint/no-shadow': [2, { ignoreTypeValueShadow: true }],

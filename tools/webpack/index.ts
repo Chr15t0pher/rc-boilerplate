@@ -36,7 +36,16 @@ const config = {
     modules: [
       'node_modules',
     ],
-    alias: {},
+    alias: {
+      '@config': resolvePath('src/config'),
+      '@apps': resolvePath('src/apps'),
+      '@core': resolvePath('src/core'),
+      '@declare': resolvePath('src/declare'),
+      '@proxy': resolvePath('src/proxy'),
+      '@service': resolvePath('src/service'),
+      '@tool': resolvePath('src/tool'),
+      '@ui': resolvePath('src/ui'),
+    },
   },
 
   module: {
